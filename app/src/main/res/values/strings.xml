@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Lille Haua</string>
+    <string name="slogan">One thousand flavors in one place</string>
+    <string name="title_activity_home">Home</string>
+
+    <string name="forgot_pwd"><u>Glemt Passord?</u></string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="action_settings">Settings</string>
+    <string name="facebook_app_id">126366874860529</string>
+    <string name="facebook_login_protocol_name">fb126366874860529</string>
+    <string name="account_kit_client_token">4493dfa0cc5f0399399bd421c18d58b4</string>
+
+
+</resources>

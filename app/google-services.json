@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "386899913646",
+    "firebase_url": "https://lille-haua.firebaseio.com",
+    "project_id": "lille-haua",
+    "storage_bucket": "lille-haua.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386899913646:android:2adac2169b4bcddc",
+        "android_client_info": {
+          "package_name": "com.example.jonet.lillehaua"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386899913646-49uck9sdvg5o13k9ic82drv12hmalakn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jonet.lillehaua",
+            "certificate_hash": "7475d0ba07d1683daf12c09140e78a669dbdb812"
+          }
+        },
+        {
+          "client_id": "386899913646-97rph3budol7q86gmoadic3190aiotsk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMS6ek-rgA9mnsIal_HqZhkVKzINTZ3-4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386899913646-97rph3budol7q86gmoadic3190aiotsk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jonet.lillehaua.FoodList">
+
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchBar"
+        android:layout_alignParentTop="true"
+        app:mt_speechMode="false"
+        app:mt_hint="Search"
+
+        />
+
+    <android.support.v7.widget.RecyclerView
+
+        android:layout_below="@id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_food"
+        android:scrollbars="vertical"
+
+
+
+
+        />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        >
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            android:elevation="0dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="@android:color/white"
+            app:srcCompat="@drawable/ic_shopping_cart_black_24dp"
+            />
+        <TextView
+            android:id="@+id/itemCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="top|right"
+            android:textColor="#ff0000"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:fontFamily="@string/title_activity_home"
+            android:text="5"
+            android:elevation="7dp"
+
+
+            />
+
+    </FrameLayout>
+
+
+</RelativeLayout>

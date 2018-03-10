@@ -1,0 +1,62 @@
+package com.example.jonet.lillehaua.Model;
+
+/**
+ * Created by jonet on 18.09.2017.
+ */
+
+public class User {
+    private String Name;
+    private String Password;
+    private String Phone;
+    private String Admin;
+
+    public User() {
+
+    }
+
+    public User(String name, String password) {
+        Name = name;
+        Password = password;
+        Admin = "false";
+
+    }
+
+    public String getAdmin() {
+        return Admin;
+    }
+
+    public void setAdmin(String admin) {
+        Admin = admin;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+
+
+
+
+
+
+}
