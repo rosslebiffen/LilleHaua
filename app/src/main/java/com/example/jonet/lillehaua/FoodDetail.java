@@ -108,6 +108,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                         currentFood.getImage()
                 ));
                 Toast.makeText(FoodDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
+                btnCart.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
 
             }
         });
@@ -256,4 +257,5 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         }); */
 
     }
+
 }

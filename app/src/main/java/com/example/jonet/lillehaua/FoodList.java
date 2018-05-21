@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andremion.counterfab.CounterFab;
 import com.example.jonet.lillehaua.Common.Common;
 import com.example.jonet.lillehaua.Database.Database;
 import com.example.jonet.lillehaua.Interface.ItemClickListener;
@@ -45,7 +46,8 @@ public class FoodList extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference foodList;
-   public  FirebaseRecyclerAdapter<Food,FoodViewHolder> adapter;
+    CounterFab fab;
+    public  FirebaseRecyclerAdapter<Food,FoodViewHolder> adapter;
 
     String categoryId="";
 
@@ -80,7 +82,7 @@ public class FoodList extends AppCompatActivity {
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (CounterFab) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +90,7 @@ public class FoodList extends AppCompatActivity {
                 startActivity(cartIntent);
             }
         });
+        fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
 
         //Get intent here
         if(getIntent()!=null)
@@ -154,6 +157,7 @@ public class FoodList extends AppCompatActivity {
         //fix click back foodetail and get no item in foodlist
         if(adapter != null)
             adapter.startListening();
+        fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
 
     }
 
