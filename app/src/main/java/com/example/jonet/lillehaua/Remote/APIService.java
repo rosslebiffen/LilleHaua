@@ -7,10 +7,8 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 
+import com.example.jonet.lillehaua.Model.DataMessage;
 import com.example.jonet.lillehaua.Model.MyResponse;
-import com.example.jonet.lillehaua.Model.Sender;
-
-
 
 
 /**
@@ -26,7 +24,7 @@ public interface APIService {
 
     )
     @POST("fcm/send")
-    Call<MyResponse> sendNotification(@Body Sender body);
+    Call<MyResponse> sendNotification(@Body DataMessage body);
 
 
 }

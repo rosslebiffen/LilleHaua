@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andremion.counterfab.CounterFab;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.jonet.lillehaua.Common.Common;
 import com.example.jonet.lillehaua.Database.Database;
@@ -33,7 +34,7 @@ public class FoodDetail extends AppCompatActivity {
     TextView food_name, food_price, food_description;
     ImageView img_food;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    FloatingActionButton btnCart;
+    CounterFab btnCart;
     ElegantNumberButton numberButton;
 
 
@@ -67,7 +68,7 @@ public class FoodDetail extends AppCompatActivity {
 
         //InitView
         numberButton = (ElegantNumberButton)findViewById(R.id.number_button);
-        btnCart = (FloatingActionButton)findViewById(R.id.btnCart);
+        btnCart = (CounterFab) findViewById(R.id.btnCart);
 
 
 
@@ -76,20 +77,19 @@ public class FoodDetail extends AppCompatActivity {
         public void onClick(View view)
             {
                 new Database(getBaseContext()).addToCart(new Order(
+                        Common.currentUser.getPhone(),
                         foodId,
                         currentFood.getName(),
                         numberButton.getNumber(),
                         currentFood.getPrice(),
-                        currentFood.getDiscount()
+                        currentFood.getDiscount(),
+                        currentFood.getImage()
                 ));
                 Toast.makeText(FoodDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
 
-
-
-
-
             }
         });
+        btnCart.setCount(new  Database(this).getCountCart(Common.currentUser.getPhone()));
 
         food_description = (TextView)findViewById(R.id.food_description);
         food_name = (TextView)findViewById(R.id.food_name);

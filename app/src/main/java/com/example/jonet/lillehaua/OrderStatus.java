@@ -2,6 +2,7 @@ package com.example.jonet.lillehaua;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,14 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.jonet.lillehaua.Common.Common;
 import com.example.jonet.lillehaua.Interface.ItemClickListener;
+import com.example.jonet.lillehaua.Model.Food;
 import com.example.jonet.lillehaua.Model.Request;
+import com.example.jonet.lillehaua.ViewHolder.FoodViewHolder;
 import com.example.jonet.lillehaua.ViewHolder.OrderViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 /**
  * Created by Jone on 23.02.2018.
@@ -55,33 +61,41 @@ public class OrderStatus extends AppCompatActivity {
     }
 
     private void loadOrders(String phone) {
-        adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(
-                Request.class,
-                R.layout.order_layout,
-                OrderViewHolder.class,
-                requests.orderByChild("phone")
-                        .equalTo(phone)
-        ) {
+        Query getOrderByUser = requests.orderByChild("phone")
+                .equalTo(phone);
+        // create options with query
+        FirebaseRecyclerOptions<Request> orderOptions = new FirebaseRecyclerOptions.Builder<Request>()
+                .setQuery(getOrderByUser,Request.class)
+                .build();
+
+        adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(orderOptions) {
             @Override
-            protected void populateViewHolder(OrderViewHolder viewHolder, Request model, int position) {
+            protected void onBindViewHolder(@NonNull OrderViewHolder viewHolder, int position, @NonNull Request model) {
                 viewHolder.txtOrderId.setText(adapter.getRef(position).getKey());
                 viewHolder.txtOrderStatus.setText(Common.convertCodeToStatus(model.getStatus()));
                 viewHolder.txtOrderAddress.setText(model.getAddress());
                 viewHolder.txtOrderPhone.setText(model.getPhone());
+            }
 
-                viewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        //to avoid click bugs
-                    }
-                });
-
+            @Override
+            public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.food_item,parent,false);
+                return new OrderViewHolder(itemView);
             }
         };
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
+        adapter.startListening();
     }
-/*
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    /*
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if(item.getIntent().equals(Common.UPDATE))

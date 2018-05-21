@@ -1,6 +1,5 @@
 package com.example.jonet.lillehaua;
 
-import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,18 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jonet.lillehaua.Common.Common;
 import com.example.jonet.lillehaua.Database.Database;
+import com.example.jonet.lillehaua.Model.DataMessage;
 import com.example.jonet.lillehaua.Model.MyResponse;
-import com.example.jonet.lillehaua.Model.Notification;
 import com.example.jonet.lillehaua.Model.Order;
 import com.example.jonet.lillehaua.Model.Request;
-import com.example.jonet.lillehaua.Model.Sender;
 import com.example.jonet.lillehaua.Model.Token;
 import com.example.jonet.lillehaua.Remote.APIService;
 import com.example.jonet.lillehaua.ViewHolder.CartAdapter;
@@ -36,8 +32,10 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import info.hoang8f.widget.FButton;
 import retrofit2.Call;
@@ -45,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Cart extends AppCompatActivity {
-    public int numberOfItems;
+
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -53,7 +51,7 @@ public class Cart extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference requests;
 
-    TextView txtTotalPrice;
+    public TextView txtTotalPrice;
     FButton btnPlace;
 
     List<Order> cart = new ArrayList<>();
@@ -131,7 +129,7 @@ public class Cart extends AppCompatActivity {
                 requests.child(order_number)
                         .setValue(request);
                 //Delete cart
-                new Database(getBaseContext()).cleanCart();
+                new Database(getBaseContext()).cleanCart(Common.currentUser.getPhone());
                 sendNotificationOrder(order_number);
 
 
@@ -151,7 +149,7 @@ public class Cart extends AppCompatActivity {
 
     private void sendNotificationOrder(final String order_number) {
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
-        Query data = tokens.orderByChild("isServerToken").equalTo(true);
+        final Query data = tokens.orderByChild("isServerToken").equalTo(true);
         data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -160,10 +158,14 @@ public class Cart extends AppCompatActivity {
                     Token serverToken = postSnapShot.getValue(Token.class);
 
                     //Create raw payload to send
-                    Notification notification = new Notification("Lille Haua", "You have a new Order "+order_number);
-                    Sender content = new Sender(serverToken.getToken(),notification);
+                  //  Notification notification = new Notification("Lille Haua", "You have a new Order "+order_number);
+                    //Sender content = new Sender(serverToken.getToken(),notification);
+                    Map<String,String> dataSend = new HashMap<>();
+                    dataSend.put("message", "You have new orders "+ order_number);
+                    DataMessage dataMessage = new DataMessage(serverToken.getToken(),dataSend);
 
-                    mService.sendNotification(content)
+
+                    mService.sendNotification(dataMessage)
                             .enqueue(new Callback<MyResponse>() {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
@@ -198,7 +200,7 @@ public class Cart extends AppCompatActivity {
     }
 
     private void loadListFood() {
-        cart = new Database(this).getCarts();
+        cart = new Database(this).getCarts(Common.currentUser.getPhone());
         adapter = new CartAdapter(cart, this);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
@@ -224,7 +226,7 @@ public class Cart extends AppCompatActivity {
     private void deleteCart(int position) {
         cart.remove(position);
         //clear from database
-        new Database(this).cleanCart();
+        new Database(this).cleanCart(Common.currentUser.getPhone());
         for (Order item:cart)
             new Database(this).addToCart(item);
 
