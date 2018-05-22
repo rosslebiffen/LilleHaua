@@ -69,7 +69,7 @@ public class Database extends SQLiteAssetHelper {
         boolean flag = false;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = null;
-        String SQLQuery = String.format("SELECT FROM OrderDetail WHERE UserPhone='%s' AND ProductId='%s'", userPhone, foodId);
+        String SQLQuery = String.format("SELECT FROM OrderDetail WHERE UserPhone='%s' AND ProductId='%s'", foodId, userPhone);
         cursor = db.rawQuery(SQLQuery, null);
         if (cursor.getCount() > 0)
             flag = true;
@@ -89,7 +89,7 @@ public class Database extends SQLiteAssetHelper {
 
     public void addToFavorites(String foodId, String userPhone) {
         SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("INSERT INTO Favorites(FoodId, UserPhone) VALUES ('%s, '%s');", foodId, userPhone);
+        String query = String.format("INSERT INTO Favorites(FoodId, UserPhone) VALUES('%s, '%s');", foodId, userPhone);
         db.execSQL(query);
     }
 

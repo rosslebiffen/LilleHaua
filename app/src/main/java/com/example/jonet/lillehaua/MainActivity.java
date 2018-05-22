@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     if(AccountKit.getCurrentAccessToken() !=null)
     {
         //create dialog
-        AlertDialog waitingDialog = new SpotsDialog(this);
+        final AlertDialog waitingDialog = new SpotsDialog(this);
         waitingDialog.show();
         waitingDialog.setMessage("Please wait");
         waitingDialog.setCancelable(false);
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
+                waitingDialog.dismiss();
 
             }
 

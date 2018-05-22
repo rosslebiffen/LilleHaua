@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -80,6 +81,14 @@ public class Home extends AppCompatActivity
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
+
+
+
+
+        //Default run for the first time
+
+
+
         //Init firebase
         database = FirebaseDatabase.getInstance();
         category = database.getReference("Category");
@@ -119,15 +128,19 @@ public class Home extends AppCompatActivity
 
         recycler_menu = (RecyclerView)findViewById(R.id.recycler_menu);
         recycler_menu.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recycler_menu.setLayoutManager(layoutManager);
-        if(Common.isConnectedToInternet(this))
+        //layoutManager = new LinearLayoutManager(this);
+       // recycler_menu.setLayoutManager(layoutManager);
+        recycler_menu.setLayoutManager(new GridLayoutManager(this, 2));
+
+        if(Common.isConnectedToInternet(getBaseContext())) {
             loadMenu();
+
+        }
         else
         {
             Toast.makeText(Home.this, "Please check your internet connection ", Toast.LENGTH_SHORT).show();
-            return;
         }
+
 
         //Token service
         updateToken(FirebaseInstanceId.getInstance().getToken());
@@ -141,7 +154,7 @@ public class Home extends AppCompatActivity
         super.onResume();
         fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
         //fix click back button from food dont see categories
-        if(adapter !=null)
+        if(adapter != null)
             adapter.startListening();
 
     }
@@ -197,6 +210,7 @@ public class Home extends AppCompatActivity
             }
         };
         recycler_menu.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
