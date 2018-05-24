@@ -10,6 +10,7 @@ public class User {
     private String Phone;
     private String Admin;
 
+
     public User() {
 
     }
@@ -21,21 +22,7 @@ public class User {
 
     }
 
-    public String getAdmin() {
-        return Admin;
-    }
 
-    public void setAdmin(String admin) {
-        Admin = admin;
-    }
-
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String phone) {
-        Phone = phone;
-    }
 
     public String getName() {
         return Name;
@@ -53,10 +40,19 @@ public class User {
         Password = password;
     }
 
+    public String getPhone() {
+        return Phone;
+    }
 
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
 
+    public String getAdmin() {
+        return Admin;
+    }
 
-
-
-
+    public void setAdmin(String admin) {
+        Admin = admin;
+    }
 }

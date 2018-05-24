@@ -1,15 +1,16 @@
 package com.example.jonet.lillehaua.Database;
 
-        import android.content.Context;
-        import android.database.Cursor;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.database.sqlite.SQLiteQueryBuilder;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 
-        import com.example.jonet.lillehaua.Model.Order;
-        import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import com.example.jonet.lillehaua.Model.Favorites;
+import com.example.jonet.lillehaua.Model.Order;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jonet on 23.09.2017.
@@ -17,7 +18,7 @@ package com.example.jonet.lillehaua.Database;
 
 public class Database extends SQLiteAssetHelper {
 
-    private static final String DB_NAME = "LilleHauaDB2.db";
+    private static final String DB_NAME = "LilleHauaDB.db";
     private static final int DB_VER = 1;
 
     public Database(Context context) {
@@ -69,13 +70,17 @@ public class Database extends SQLiteAssetHelper {
         boolean flag = false;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = null;
-        String SQLQuery = String.format("SELECT FROM OrderDetail WHERE UserPhone='%s' AND ProductId='%s'", foodId, userPhone);
+        String SQLQuery = String.format("SELECT * FROM OrderDetail WHERE UserPhone='%s' AND ProductId='%s'", userPhone, foodId);
         cursor = db.rawQuery(SQLQuery, null);
-        if (cursor.getCount() > 0)
+        if (cursor.getCount() > 0){
             flag = true;
+        }
         else
+            {
             flag = false;
-        cursor.close();
+            cursor.close();
+
+            }
         return flag;
     }
 
@@ -87,9 +92,19 @@ public class Database extends SQLiteAssetHelper {
     }
     //Favorites
 
-    public void addToFavorites(String foodId, String userPhone) {
+    public void addToFavorites(Favorites food) {
         SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("INSERT INTO Favorites(FoodId, UserPhone) VALUES('%s, '%s');", foodId, userPhone);
+        String query = String.format("INSERT INTO Favorites(" +
+                "FoodId,FoodName,FoodPrice,FoodMenuId,FoodImage,FoodDiscount,FoodDescription,UserPhone)" +
+                "VALUES('%s', '%s','%s','%s','%s','%s','%s','%s');",
+                food.getFoodId(),
+                food.getFoodName(),
+                food.getFoodPrice(),
+                food.getFoodMenuId(),
+                food.getFoodImage(),
+                food.getFoodDiscount(),
+                food.getFoodDescription(),
+                food.getUserPhone());
         db.execSQL(query);
     }
 
@@ -137,6 +152,33 @@ public class Database extends SQLiteAssetHelper {
             } while (cursor.moveToNext());
         }
         return count;
+    }
+
+    public List<Favorites> getAllFavorites(String userPhone) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String[] sqlSelect = {"UserPhone", "FoodId", "FoodName","FoodPrice", "FoodMenuId", "FoodImage", "FoodDiscount","FoodDescription"};
+        String sqlTable = "Favorites";
+
+        qb.setTables(sqlTable);
+        Cursor c = qb.query(db, sqlSelect, "UserPhone=?", new String[]{userPhone}, null, null, null);
+        final List<Favorites> result = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                result.add(new Favorites(
+                        c.getString(c.getColumnIndex("FoodId")),
+                        c.getString(c.getColumnIndex("FoodName")),
+                        c.getString(c.getColumnIndex("FoodPrice")),
+                        c.getString(c.getColumnIndex("FoodMenuId")),
+                        c.getString(c.getColumnIndex("FoodImage")),
+                        c.getString(c.getColumnIndex("FoodDiscount")),
+                        c.getString(c.getColumnIndex("FoodDescription")),
+                        c.getString(c.getColumnIndex("UserPhone"))
+                ));
+            } while (c.moveToNext());
+        }
+        return result;
     }
 
 }

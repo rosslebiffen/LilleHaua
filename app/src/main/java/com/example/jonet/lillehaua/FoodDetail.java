@@ -59,6 +59,16 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
     Food currentFood;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(btnCart!=null){
+
+            btnCart.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
@@ -98,6 +108,11 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean ifExists = new Database(getBaseContext()).checkFoodExists(foodId,Common.currentUser.getPhone());
+                if(ifExists){
+                    Toast.makeText(FoodDetail.this, "You already have this item in your cart", Toast.LENGTH_SHORT).show();
+                }
+                if(!ifExists) {
                 new Database(getBaseContext()).addToCart(new Order(
                         Common.currentUser.getPhone(),
                         foodId,
@@ -110,7 +125,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 Toast.makeText(FoodDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
                 btnCart.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
 
-            }
+            }}
         });
         btnCart.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
 

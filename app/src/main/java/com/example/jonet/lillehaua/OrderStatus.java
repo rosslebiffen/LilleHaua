@@ -31,12 +31,14 @@ import com.google.firebase.database.Query;
 
 public class OrderStatus extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
+   public  RecyclerView recyclerView;
+   public RecyclerView.LayoutManager layoutManager;
 
     FirebaseRecyclerAdapter<Request, OrderViewHolder> adapter;
     FirebaseDatabase db;
     DatabaseReference requests;
+
+    public String phoneRef;
 
 
 
@@ -55,16 +57,21 @@ public class OrderStatus extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-            loadOrders(Common.currentUser.getPhone()); // load all orders
+        phoneRef = Common.currentUser.getPhone();
 
+        if(getIntent()== null)
+           loadOrders(Common.currentUser.getPhone()); // load all orders
+
+        else
+            loadOrders(getIntent().getStringExtra("userPhone"));
 
     }
 
     private void loadOrders(String phone) {
         Query getOrderByUser = requests.orderByChild("phone")
                 .equalTo(phone);
-        // create options with query
-        FirebaseRecyclerOptions<Request> orderOptions = new FirebaseRecyclerOptions.Builder<Request>()
+
+        FirebaseRecyclerOptions<Request>orderOptions = new FirebaseRecyclerOptions.Builder<Request>()
                 .setQuery(getOrderByUser,Request.class)
                 .build();
 
@@ -75,73 +82,36 @@ public class OrderStatus extends AppCompatActivity {
                 viewHolder.txtOrderStatus.setText(Common.convertCodeToStatus(model.getStatus()));
                 viewHolder.txtOrderAddress.setText(model.getAddress());
                 viewHolder.txtOrderPhone.setText(model.getPhone());
+
+
             }
 
             @Override
             public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.food_item,parent,false);
+                        .inflate(R.layout.order_layout, parent, false);
                 return new OrderViewHolder(itemView);
             }
         };
-        adapter.notifyDataSetChanged();
-        recyclerView.setAdapter(adapter);
         adapter.startListening();
+        recyclerView.setAdapter(adapter);
+
     }
+
+
 
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.stopListening();
+        if(adapter!=null)
+            adapter.stopListening();
     }
 
-    /*
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if(item.getIntent().equals(Common.UPDATE))
-            showUpdateDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
-        else if(item.getIntent().equals(Common.DELETE))
-            deleteOrder(adapter.getRef(item.getOrder()).getKey());
-
-        return super.onContextItemSelected(item);
+    protected void onResume() {
+        super.onResume();
+        if(adapter!=null)
+            adapter.stopListening();
     }
 
-    private void deleteOrder(String key) {
-        requests.child(key).removeValue();
-    }
-
-    private void showUpdateDialog(String key, final Request item) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderStatus.this);
-        alertDialog.setTitle("Update Order");
-        alertDialog.setMessage("Choose status");
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View view = inflater.inflate(R.layout.update_order_layout,null);
-
-        spinner = (MaterialSpinner)view.findViewById(R.id.statusSpinner);
-        spinner.setItems("Placed", "Preparing your food", "Done");
-
-        alertDialog.setView(view);
-
-        final String localKey = key;
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                item.setStatus(String.valueOf(spinner.getSelectedIndex()));
-
-                requests.child(localKey).setValue(item);
-            }
-        });
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alertDialog.show();
-
-    }
-
-*/
 }

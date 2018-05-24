@@ -54,9 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     FacebookSdk.sdkInitialize(getApplicationContext());
@@ -114,11 +112,12 @@ public class MainActivity extends AppCompatActivity {
                                 Common.currentUser = localUser;
                                 startActivity(homeIntent);
                                 finish();
+                                waitingDialog.dismiss();
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-
+                                waitingDialog.dismiss();
                             }
                         });
                 waitingDialog.dismiss();
@@ -132,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
+
+
 
     private void startLoginSystem() {
         Intent intent = new Intent(MainActivity.this, AccountKitActivity.class);

@@ -162,7 +162,8 @@ public class Home extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.stopListening();
+        if(adapter !=null)
+            adapter.stopListening();
     }
 
     private void updateToken(String token) {

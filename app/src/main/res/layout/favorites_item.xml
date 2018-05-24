@@ -41,13 +41,7 @@
                 android:layout_weight="8"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
-            <ImageView
-                android:id="@+id/fav"
-                android:src="@drawable/ic_favorite_border_black_24dp"
-                android:tint="@color/colorAccent"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
+
 
             <ImageView
                 android:id="@+id/btn_quick_cart"
@@ -61,7 +55,7 @@
 
 
 
-    </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:layout_margin="10dp"

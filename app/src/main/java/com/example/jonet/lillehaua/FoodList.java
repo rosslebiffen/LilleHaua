@@ -241,6 +241,9 @@ public class FoodList extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         boolean ifExists = new Database(getBaseContext()).checkFoodExists(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
+                        if(ifExists){
+                            Toast.makeText(FoodList.this, "You already have this item in your cart", Toast.LENGTH_SHORT).show();
+                        }
                         if(!ifExists) {
                             new Database(getBaseContext()).addToCart(new Order(
                                     Common.currentUser.getPhone(),
@@ -251,12 +254,14 @@ public class FoodList extends AppCompatActivity {
                                     model.getDiscount(),
                                     model.getImage()
                             ));
-
+                            Toast.makeText(FoodList.this, "Added to cart", Toast.LENGTH_SHORT).show();
+                            fab.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
 
                         } else {
                             new Database(getBaseContext()).increaseCart(Common.currentUser.getPhone(),adapter.getRef(position).getKey());
+
                         }
-                        Toast.makeText(FoodList.this, "Added to cart", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
@@ -275,13 +280,13 @@ public class FoodList extends AppCompatActivity {
                         {
                             localDB.addToFavorites(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                            Toast.makeText(FoodList.this, ""+model.getName()+"was added to Favorites", Toast.LENGTH_SHORT);
+                            Toast.makeText(FoodList.this, ""+model.getName()+" was added to Favorites", Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
                             localDB.removeFromFavorites(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                            Toast.makeText(FoodList.this, ""+model.getName()+"was removed from  Favorites", Toast.LENGTH_SHORT);
+                            Toast.makeText(FoodList.this, ""+model.getName()+" was removed from  Favorites", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
