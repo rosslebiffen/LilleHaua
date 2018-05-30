@@ -3,6 +3,8 @@ package com.example.jonet.lillehaua.ViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jonet.lillehaua.Interface.ItemClickListener;
@@ -16,6 +18,9 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder implements View
 
     private ItemClickListener itemClickListener;
 
+    public RelativeLayout view_background;
+    public LinearLayout view_foreground;
+
     public void setItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
@@ -27,6 +32,8 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder implements View
         food_image = (ImageView)itemView.findViewById(R.id.food_image);
         fav_image = (ImageView)itemView.findViewById(R.id.fav);
         quickCart= (ImageView)itemView.findViewById(R.id.btn_quick_cart);
+        view_background = (RelativeLayout)itemView.findViewById(R.id.view_background);
+        view_foreground = (LinearLayout) itemView.findViewById(R.id.view_foreground);
         itemView.setOnClickListener(this);
     }
 

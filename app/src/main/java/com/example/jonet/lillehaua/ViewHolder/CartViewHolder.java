@@ -13,7 +13,7 @@ import com.example.jonet.lillehaua.Common.Common;
 import com.example.jonet.lillehaua.Interface.ItemClickListener;
 import com.example.jonet.lillehaua.R;
 
-class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener{
+public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener{
 
     public TextView txt_cart_name,txt_price;
     public ElegantNumberButton btn_quantity;
@@ -24,9 +24,7 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
     private ItemClickListener itemClickListener;
 
-    public void setTxt_cart_name(TextView txt_cart_name) {
-        this.txt_cart_name = txt_cart_name;
-    }
+
 
     public CartViewHolder(View itemView) {
         super(itemView);
@@ -39,6 +37,13 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
         itemView.setOnCreateContextMenuListener(this);
 
+    }
+    public void setTxt_cart_name(TextView txt_cart_name) {
+        this.txt_cart_name = txt_cart_name;
+    }
+
+    public void setTxt_price(TextView txt_price) {
+        this.txt_price = txt_price;
     }
 
     @Override

@@ -41,7 +41,6 @@
         <activity android:name=".Cart" />
         <activity android:name=".OrderStatus" />
 
-
         <service android:name=".Service.MyFirebaseIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -58,7 +57,8 @@
             android:authorities="com.facebook.app.FacebookContentProvider126366874860529"
             android:exported="true" />
 
-        <activity android:name=".FavoritesActivity"></activity>
+        <activity android:name=".FavoritesActivity" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

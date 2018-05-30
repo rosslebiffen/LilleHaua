@@ -14,6 +14,9 @@ import com.example.jonet.lillehaua.Remote.RetrofitClient;
 
 public class Common {
 
+    public static String topicName = "News";
+
+
     public static User currentUser;
 
     public static String PHONE_TEXT = "userPhone";

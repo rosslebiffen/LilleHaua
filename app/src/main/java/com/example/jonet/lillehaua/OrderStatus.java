@@ -59,11 +59,10 @@ public class OrderStatus extends AppCompatActivity {
 
         phoneRef = Common.currentUser.getPhone();
 
-        if(getIntent()== null)
-           loadOrders(Common.currentUser.getPhone()); // load all orders
-
+        if(getIntent() != null)
+            loadOrders(Common.currentUser.getPhone()); // load all orders
         else
-            loadOrders(getIntent().getStringExtra("userPhone"));
+            loadOrders(getIntent().getStringExtra(Common.currentUser.getPhone()));
 
     }
 
@@ -111,7 +110,7 @@ public class OrderStatus extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(adapter!=null)
-            adapter.stopListening();
+            adapter.startListening();
     }
 
 }

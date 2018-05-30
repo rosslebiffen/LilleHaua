@@ -26,6 +26,11 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    //Slider
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.daimajia.slider:library:1.1.5@aar'
+
     implementation 'com.google.android.gms:play-services-basement:11.6.2'
     implementation 'com.google.android.gms:play-services-auth:11.6.2'
     implementation 'com.firebaseui:firebase-ui-database:3.1.2'
