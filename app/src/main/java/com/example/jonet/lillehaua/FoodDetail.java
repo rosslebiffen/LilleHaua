@@ -43,7 +43,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
     TextView food_name, food_price, food_description;
     ImageView img_food;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    CounterFab btnCart;
+    CounterFab btnCart, btnCheckout;
     FloatingActionButton btnRating;
     RatingBar ratingBar;
     ElegantNumberButton numberButton;
@@ -64,6 +64,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         if(btnCart!=null){
 
             btnCart.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+            checkButtons();
 
         }
     }
@@ -81,14 +82,16 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         ratingTbl = database.getReference("Rating");
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        btnCheckout = (CounterFab) findViewById(R.id.fab);
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cartIntent = new Intent(FoodDetail.this, Cart.class);
+                Intent cartIntent = new Intent (FoodDetail.this,Cart.class);
                 startActivity(cartIntent);
             }
         });
+        btnCheckout.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
 
         //InitView
         numberButton = (ElegantNumberButton) findViewById(R.id.number_button);
@@ -124,6 +127,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 ));
                 Toast.makeText(FoodDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
                 btnCart.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
+                checkButtons();
 
             }}
         });
@@ -151,7 +155,21 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 return;
             }
         }
+        checkButtons();
 
+    }
+
+    private void checkButtons(){
+        boolean ifExists = new Database(getBaseContext()).checkFoodExists(foodId,Common.currentUser.getPhone());
+        if (ifExists){
+            btnCart.setVisibility(View.INVISIBLE);
+            btnCheckout.setVisibility(View.VISIBLE);
+        }else
+        {
+            btnCart.setVisibility(View.VISIBLE);
+            btnCheckout.setVisibility(View.INVISIBLE);
+        }
+        btnCheckout.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
     }
 
     private void getRatingFood(String foodId) {

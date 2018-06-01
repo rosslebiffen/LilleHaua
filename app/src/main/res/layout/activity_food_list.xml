@@ -49,7 +49,7 @@
             android:elevation="0dp"
             android:layout_margin="@dimen/fab_margin"
             android:backgroundTint="@android:color/white"
-            app:srcCompat="@drawable/ic_shopping_cart_black_24dp"
+            app:srcCompat="@drawable/ic_playlist_add_check_black_24dp"
             />
 
 

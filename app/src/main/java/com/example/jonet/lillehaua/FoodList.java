@@ -359,6 +359,42 @@ public class FoodList extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(foodOptions) {
             @Override
             protected void onBindViewHolder(@NonNull final FoodViewHolder viewHolder, final int position, @NonNull final Food model) {
+                if(model.getDescription().contains("A)")){
+
+                    viewHolder.btnA.setVisibility(View.VISIBLE);
+                }else{
+                    viewHolder.btnA.setVisibility(View.INVISIBLE);
+                }
+                if(model.getDescription().contains("B)")){
+
+                    viewHolder.btnB.setVisibility(View.VISIBLE);
+                }else{
+                    viewHolder.btnB.setVisibility(View.INVISIBLE);
+                }
+                if(model.getDescription().contains("C)")){
+
+                    viewHolder.btnC.setVisibility(View.VISIBLE);
+                }else{
+                    viewHolder.btnC.setVisibility(View.INVISIBLE);
+                }
+                if(model.getDescription().contains("D)")){
+
+                    viewHolder.btnD.setVisibility(View.VISIBLE);
+                }else{
+                    viewHolder.btnD.setVisibility(View.INVISIBLE);
+                }
+                if(model.getDescription().contains("E)")){
+
+                    viewHolder.btnE.setVisibility(View.VISIBLE);
+                }else{
+                    viewHolder.btnE.setVisibility(View.INVISIBLE);
+                }
+                if(model.getDescription().contains("F)")){
+
+                    viewHolder.btnF.setVisibility(View.VISIBLE);
+                }else{
+                    viewHolder.btnF.setVisibility(View.INVISIBLE);
+                }
                 viewHolder.food_name.setText(model.getName());
                 viewHolder.food_price.setText(String.format("$ %s",model.getPrice().toString()));
                 Picasso.with(getBaseContext()).load(model.getImage())
@@ -462,6 +498,12 @@ public class FoodList extends AppCompatActivity {
         swipeRefreshLayout.setRefreshing(false);
 
 
+    }
+
+    private void displayGluten() {
+        int count = 0;
+        count++;
+        Toast.makeText(FoodList.this, count+ " items contains gluten", Toast.LENGTH_SHORT).show();
     }
 
     @Override

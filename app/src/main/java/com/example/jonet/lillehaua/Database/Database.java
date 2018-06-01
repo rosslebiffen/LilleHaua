@@ -149,6 +149,7 @@ public class Database extends SQLiteAssetHelper {
         if (cursor.moveToFirst()) {
             do {
                 count = cursor.getInt(0);
+
             } while (cursor.moveToNext());
         }
         return count;
