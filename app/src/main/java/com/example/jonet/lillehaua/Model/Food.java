@@ -1,8 +1,6 @@
 package com.example.jonet.lillehaua.Model;
 
-/**
- * Created by jonet on 21.09.2017.
- */
+
 
 public class Food {
     private String Name, Image, Description, Price, Discount, MenuId;

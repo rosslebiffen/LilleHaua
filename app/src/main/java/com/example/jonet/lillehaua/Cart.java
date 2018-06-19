@@ -160,7 +160,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                         cart
                 );
                 //Submit to Firebase
-                // Use System.currentTimeMillis as key
+                // med System.currentTimeMillis som key
                String order_number = String.valueOf(System.currentTimeMillis());
                 requests.child(order_number)
                         .setValue(request);

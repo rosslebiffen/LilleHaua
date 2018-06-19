@@ -24,9 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-/**
- * Created by Jone on 23.02.2018.
- */
 
 
 public class OrderStatus extends AppCompatActivity {

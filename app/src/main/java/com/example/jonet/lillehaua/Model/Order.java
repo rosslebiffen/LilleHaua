@@ -1,8 +1,5 @@
 package com.example.jonet.lillehaua.Model;
 
-/**
- * Created by jonet on 23.09.2017.
- */
 
 public class Order {
     private String UserPhone;

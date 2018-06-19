@@ -2,9 +2,7 @@ package com.example.jonet.lillehaua.Model;
 
 import java.util.Map;
 
-/**
- * Created by Jone on 15.05.2018.
- */
+
 
 public class DataMessage {
     public String to;

@@ -1,8 +1,5 @@
 package com.example.jonet.lillehaua.Model;
 
-/**
- * Created by jonet on 20.09.2017.
- */
 
 public class Category {
     private String Name;

@@ -8,9 +8,6 @@ import com.example.jonet.lillehaua.Model.User;
 import com.example.jonet.lillehaua.Remote.APIService;
 import com.example.jonet.lillehaua.Remote.RetrofitClient;
 
-/**
- * Created by jonet on 20.09.2017.
- */
 
 public class Common {
 

@@ -2,10 +2,6 @@ package com.example.jonet.lillehaua.Model;
 
 import java.util.List;
 
-/**
- * Created by jonet on 23.09.2017.
- */
-
 public class Request {
     private String phone;
     private String name;
