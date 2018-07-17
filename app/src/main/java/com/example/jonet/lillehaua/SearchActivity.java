@@ -76,7 +76,7 @@ public class SearchActivity extends AppCompatActivity {
 
         //search
         materialSearchBar = (MaterialSearchBar)findViewById(R.id.searchBar);
-        materialSearchBar.setHint("Search all food");
+        materialSearchBar.setHint("Søk i menyen vår");
         //materialSearchBar.setSpeechMode(false); no need, because we already define it at xml
         loadSuggest();
         
@@ -157,7 +157,7 @@ public class SearchActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         boolean ifExists = new Database(getBaseContext()).checkFoodExists(adapter.getRef(position).getKey(), Common.currentUser.getPhone());
                         if(ifExists){
-                            Toast.makeText(SearchActivity.this, "You already have this item in your cart", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchActivity.this, "Du har allerede dette i handlevognen", Toast.LENGTH_SHORT).show();
                         }
                         if(!ifExists) {
                             new Database(getBaseContext()).addToCart(new Order(
@@ -169,7 +169,7 @@ public class SearchActivity extends AppCompatActivity {
                                     model.getDiscount(),
                                     model.getImage()
                             ));
-                            Toast.makeText(SearchActivity.this, "Added to cart", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchActivity.this, " Lagt til i handlevogn", Toast.LENGTH_SHORT).show();
 
 
                         } else {
@@ -210,13 +210,13 @@ public class SearchActivity extends AppCompatActivity {
                         {
                             localDB.addToFavorites(favorites);
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                            Toast.makeText(SearchActivity.this, ""+model.getName()+" was added to Favorites", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchActivity.this, ""+model.getName()+" ble lagt til i favoritter", Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
                             localDB.removeFromFavorites(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                            Toast.makeText(SearchActivity.this, ""+model.getName()+" was removed from  Favorites", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchActivity.this, ""+model.getName()+" ble fjernet fra favoritter", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -266,7 +266,7 @@ public class SearchActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         boolean ifExists = new Database(getBaseContext()).checkFoodExists(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
                         if(ifExists){
-                            Toast.makeText(SearchActivity.this, "You already have this item in your cart", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchActivity.this, "Du har allerede dette i handlevognen", Toast.LENGTH_SHORT).show();
                         }
                         if(!ifExists) {
                             new Database(getBaseContext()).addToCart(new Order(
@@ -278,7 +278,7 @@ public class SearchActivity extends AppCompatActivity {
                                     model.getDiscount(),
                                     model.getImage()
                             ));
-                            Toast.makeText(SearchActivity.this, "Added to cart", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchActivity.this, "Lagt til i handlevogn", Toast.LENGTH_SHORT).show();
 
 
                         } else {
@@ -319,13 +319,13 @@ public class SearchActivity extends AppCompatActivity {
                         {
                             localDB.addToFavorites(favorites);
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                            Toast.makeText(SearchActivity.this, ""+model.getName()+" was added to Favorites", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchActivity.this, ""+model.getName()+" ble lagt til i favoritter", Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
                             localDB.removeFromFavorites(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                            Toast.makeText(SearchActivity.this, ""+model.getName()+" was removed from  Favorites", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SearchActivity.this, ""+model.getName()+" ble fjernet fra favoritter", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

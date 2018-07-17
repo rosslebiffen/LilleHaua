@@ -6,33 +6,33 @@
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Menu" />
+            android:title="Meny" />
         <item
             android:id="@+id/nav_favorites"
             android:icon="@drawable/ic_favorite_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Favorites" />
+            android:title="Favoritter" />
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Cart" />
+            android:title="Handlevogn" />
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_access_time_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Orders" />
+            android:title="Mine Bestillinger" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Settings" />
+            android:title="Instillinger" />
 
         <item
             android:id="@+id/nav_log_out"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Sign Out" />
+            android:title="Logg ut" />
 
     </group>
 

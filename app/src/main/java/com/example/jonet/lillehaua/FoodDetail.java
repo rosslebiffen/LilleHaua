@@ -69,6 +69,8 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         }
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +85,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
 
 
 
-        btnCheckout = (CounterFab) findViewById(R.id.fab);
+        btnCheckout = (CounterFab) findViewById(R.id.fab1);
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +97,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
 
         //InitView
         numberButton = (ElegantNumberButton) findViewById(R.id.number_button);
-        btnCart = (CounterFab) findViewById(R.id.btnCart);
+        btnCart = (CounterFab) findViewById(R.id.btnCart1);
         btnRating = (FloatingActionButton) findViewById(R.id.btn_rating);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
@@ -113,7 +115,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
             public void onClick(View view) {
                 boolean ifExists = new Database(getBaseContext()).checkFoodExists(foodId,Common.currentUser.getPhone());
                 if(ifExists){
-                    Toast.makeText(FoodDetail.this, "You already have this item in your cart", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodDetail.this, "Du har allerede denne i handlevognen", Toast.LENGTH_SHORT).show();
                 }
                 if(!ifExists) {
                 new Database(getBaseContext()).addToCart(new Order(
@@ -125,7 +127,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                         currentFood.getDiscount(),
                         currentFood.getImage()
                 ));
-                Toast.makeText(FoodDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodDetail.this, "Lagt til i handlevogn", Toast.LENGTH_SHORT).show();
                 btnCart.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
                 checkButtons();
 
@@ -151,7 +153,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 getDetailFood(foodId);
                 getRatingFood(foodId);
             } else {
-                Toast.makeText(FoodDetail.this, "Please check your internet connection ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodDetail.this, "Vennligst sjekk nettverksforbindelsen din ", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -160,6 +162,8 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
     }
 
     private void checkButtons(){
+
+
         boolean ifExists = new Database(getBaseContext()).checkFoodExists(foodId,Common.currentUser.getPhone());
         if (ifExists){
             btnCart.setVisibility(View.INVISIBLE);
@@ -170,6 +174,8 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
             btnCheckout.setVisibility(View.INVISIBLE);
         }
         btnCheckout.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+
+
     }
 
     private void getRatingFood(String foodId) {
@@ -199,15 +205,15 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
 
     private void showRatingDialog() {
         new AppRatingDialog.Builder()
-                .setPositiveButtonText("Submit")
-                .setNegativeButtonText("Cancel")
-                .setNoteDescriptions(java.util.Arrays.asList("Very Bad", "Not Good", "Quite Ok", "Very Good", "Excellent"))
+                .setPositiveButtonText("Send")
+                .setNegativeButtonText("Avbryt")
+                .setNoteDescriptions(java.util.Arrays.asList("Dårlig", "Ikke bra", "Helt OK", "Veldig bra", "Deilig"))
                 .setDefaultRating(1)
-                .setTitle("Rate this food")
-                .setDescription("Please select stars and give your feedback")
+                .setTitle("Ranger maten")
+                .setDescription("Vennligst velg antall stjerner og gi oss tilbakemelding")
                 .setTitleTextColor(R.color.colorPrimary)
                 .setDescriptionTextColor(R.color.colorPrimary)
-                .setHint("Any comments?")
+                .setHint("Kommentar?")
                 .setHintTextColor(R.color.colorAccent)
                 .setCommentTextColor(android.R.color.white)
                 .setCommentBackgroundColor(R.color.colorPrimaryDark)
@@ -229,7 +235,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                         .into(img_food);
 
                 collapsingToolbarLayout.setTitle(currentFood.getName());
-                food_price.setText(currentFood.getPrice());
+                food_price.setText(currentFood.getPrice()+",-");
                 food_name.setText(currentFood.getName());
                 food_description.setText(currentFood.getDescription());
 
@@ -261,7 +267,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(FoodDetail.this, "Thank you for submitting your feedback", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodDetail.this, "Takk for din tilbakemelding!", Toast.LENGTH_SHORT).show();
                     }
                 });
         /*
@@ -290,5 +296,6 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         }); */
 
     }
+
 
 }

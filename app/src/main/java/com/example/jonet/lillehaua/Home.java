@@ -2,8 +2,10 @@ package com.example.jonet.lillehaua;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +71,7 @@ public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
-    CounterFab fab;
+    CounterFab fabHome;
     private static final String TAG = Home.class.getName();
     FirebaseDatabase database;
     DatabaseReference category;
@@ -80,6 +83,9 @@ public class Home extends AppCompatActivity
 
     SwipeRefreshLayout swipeRefreshLayout;
 
+
+
+
     //slider
     HashMap<String, String> image_list;
     SliderLayout mSlider;
@@ -90,9 +96,12 @@ public class Home extends AppCompatActivity
         setContentView(R.layout.activity_home);
 
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
+
 
 
 
@@ -112,7 +121,7 @@ public class Home extends AppCompatActivity
                 }
                 else
                 {
-                    Toast.makeText(Home.this, "Please check your internet connection ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Home.this, "Vennligst sjekk nettverksforbindelsen din  ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -125,10 +134,12 @@ public class Home extends AppCompatActivity
                 }
                 else
                 {
-                    Toast.makeText(Home.this, "Please check your internet connection ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Home.this, "Vennligst sjekk nettverksforbindelsen din  ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
 
 
 
@@ -147,8 +158,8 @@ public class Home extends AppCompatActivity
 
 
 
-        fab = (CounterFab) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabHome = (CounterFab) findViewById(R.id.fabHome);
+        fabHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent cartIntent = new Intent (Home.this,Cart.class);
@@ -156,7 +167,7 @@ public class Home extends AppCompatActivity
             }
         });
 
-        fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+        fabHome.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -222,9 +233,9 @@ public class Home extends AppCompatActivity
         }
         else
         {
-            Toast.makeText(Home.this, "Please check your internet connection ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Home.this, "Vennligst sjekk nettverksforbindelsen din ", Toast.LENGTH_SHORT).show();
 
-                swipeRefreshLayout.setRefreshing(false);
+            swipeRefreshLayout.setRefreshing(false);
         }
 
 
@@ -305,13 +316,15 @@ public class Home extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+        fabHome.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
         //fix click back button from food dont see categories
         if(adapter != null)
             adapter.startListening();
         if(swipeRefreshLayout.isRefreshing())
             swipeRefreshLayout.setRefreshing(false);
         mSlider.startAutoCycle();
+
+
     }
 
     @Override
@@ -384,7 +397,7 @@ public class Home extends AppCompatActivity
             startActivity(cartIntent);
 
         } else if (id == R.id.nav_orders) {
-           Intent orderIntent = new Intent(Home.this,OrderStatus.class);
+            Intent orderIntent = new Intent(Home.this,OrderStatus.class);
             startActivity(orderIntent);
 
         }
@@ -417,7 +430,7 @@ public class Home extends AppCompatActivity
 
     private void showSettingsDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Home.this);
-        alertDialog.setTitle("SETTINGS");
+        alertDialog.setTitle("Innstillinger");
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View layout_settings = inflater.inflate(R.layout.settings_layout, null);

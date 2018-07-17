@@ -18,7 +18,8 @@ public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public TextView food_name, food_price;
     public ImageView food_image;
     public ImageView fav_image, quickCart;
-    public ImageView btnA, btnB, btnC, btnD, btnE, btnF;
+    public ImageView btnA, btnB, btnE, btnF, btnG, btnH, btnJ, btnK, btnL;
+
 
     private ItemClickListener itemClickListener;
 
@@ -35,10 +36,15 @@ public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         quickCart= (ImageView)itemView.findViewById(R.id.btn_quick_cart);
         btnA = (ImageView) itemView.findViewById(R.id.btnA);
         btnB = (ImageView) itemView.findViewById(R.id.btnB);
-        btnC = (ImageView) itemView.findViewById(R.id.btnC);
-        btnD = (ImageView) itemView.findViewById(R.id.btnD);
         btnE = (ImageView) itemView.findViewById(R.id.btnE);
         btnF = (ImageView) itemView.findViewById(R.id.btnF);
+        btnG = (ImageView) itemView.findViewById(R.id.btnG);
+        btnH = (ImageView) itemView.findViewById(R.id.btnH);
+        btnJ = (ImageView) itemView.findViewById(R.id.btnJ);
+        btnK = (ImageView) itemView.findViewById(R.id.btnK);
+        btnL = (ImageView) itemView.findViewById(R.id.btnL);
+
+
 
         itemView.setOnClickListener(this);
     }

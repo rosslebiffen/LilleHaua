@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#00251a</color>
     <color name="colorAccent">#39796b</color>
 
+    <color name="colorAllergyOff">#363636</color>
+    <color name="colorAllergyOn">#39796b</color>
+
     <color name="btnSignUp">#39796b</color>
     <color name="btnSignActive">#A9d440</color>
 

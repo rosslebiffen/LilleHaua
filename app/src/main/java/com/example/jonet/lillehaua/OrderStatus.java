@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.example.jonet.lillehaua.Common.Common;
 import com.example.jonet.lillehaua.Interface.ItemClickListener;
@@ -37,12 +38,15 @@ public class OrderStatus extends AppCompatActivity {
 
     public String phoneRef;
 
+    RelativeLayout relativeLayout;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status);
+
 
         //Firebase
         db = FirebaseDatabase.getInstance();
@@ -53,6 +57,7 @@ public class OrderStatus extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        relativeLayout = (RelativeLayout)findViewById(R.id.orderLayout);
 
         phoneRef = Common.currentUser.getPhone();
 

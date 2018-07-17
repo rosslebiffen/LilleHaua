@@ -21,8 +21,10 @@ import android.widget.Toast;
 import com.example.jonet.lillehaua.Common.Common;
 import com.example.jonet.lillehaua.Database.Database;
 import com.example.jonet.lillehaua.Helper.RecyclerItemTouchHelper;
+import com.example.jonet.lillehaua.Helper.testDateRange;
 import com.example.jonet.lillehaua.Interface.RecyclerItemTouchHelperListener;
 import com.example.jonet.lillehaua.Model.DataMessage;
+import com.example.jonet.lillehaua.Model.MonthlyOrders;
 import com.example.jonet.lillehaua.Model.MyResponse;
 import com.example.jonet.lillehaua.Model.Order;
 import com.example.jonet.lillehaua.Model.Request;
@@ -30,6 +32,7 @@ import com.example.jonet.lillehaua.Model.Token;
 import com.example.jonet.lillehaua.Remote.APIService;
 import com.example.jonet.lillehaua.ViewHolder.CartAdapter;
 import com.example.jonet.lillehaua.ViewHolder.CartViewHolder;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,8 +43,11 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rey.material.widget.SnackBar;
 
 import java.lang.reflect.Array;
+import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -52,14 +58,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
-
+    public int myPercentage = 2;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
     FirebaseDatabase database;
     DatabaseReference requests;
+    DatabaseReference monthRef;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public TextView txtTotalPrice, cart_item_name, cart_item_price ;
     FButton btnPlace;
@@ -84,6 +97,11 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         //Firebase
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+
+
+
 
         recyclerView=(RecyclerView)findViewById(R.id.listCart);
         recyclerView.setHasFixedSize(true);
@@ -101,14 +119,73 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
 
 
+
+
+
+
+
+
+
+
+
+
+
         btnPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(cart.size()> 0)
-                    showAlertDialog();
-                else
-                    Toast.makeText(Cart.this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
-            }
+                if(cart.size()> 0){
+                   int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+
+
+
+
+                    if(currentDay == 1) {
+                        //sunday
+                        Calendar cal = Calendar.getInstance(); //Create Calendar-Object
+                        cal.setTime(new Date());               //Set the Calendar to now
+                        int hour = cal.get(Calendar.HOUR_OF_DAY); //Get the hour from the calendar
+                        if(hour < 22 && hour >= 10)              // Check if hour is between 8 am and 11pm
+                        {
+                            showAlertDialog();
+                        }else if(hour >=2)
+                        {
+                            showAlertDialog();
+                        }
+                        else{
+                            Toast.makeText(Cart.this, "Beklager, vi har bare åpent mellom 10 og 22 på søndager", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    else if (currentDay == 7){
+
+                        //saturday
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(new Date());
+                        int hour = cal.get(Calendar.HOUR_OF_DAY);
+                        testDateRange clock  = new testDateRange();
+                        if(clock.isTimeBetweenTwoHours(9, 2, cal)) {
+                            showAlertDialog();
+                        }
+                        else{
+                            Toast.makeText(Cart.this, "Beklager, vi har bare åpent mellom 9 og 02 på lørdager", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        //any day
+                        Calendar cal = Calendar.getInstance(); //Create Calendar-Object
+                        cal.setTime(new Date());               //Set the Calendar to now
+                        int hour = cal.get(Calendar.HOUR_OF_DAY); //Get the hour from the calendar
+
+                        if(hour <= 22 && hour >= 9)              // Check if hour is between 8 am and 11pm
+                        {
+                            showAlertDialog();
+                        }else{
+                            Toast.makeText(Cart.this, "Beklager, vi har bare åpent mellom 9 og 22 på hverdager", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(Cart.this, "Handlevognen din er tom", Toast.LENGTH_SHORT).show();
+            }}
         });
 
         loadListFood();
@@ -118,8 +195,8 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
     private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
-        alertDialog.setTitle("One more step");
-        alertDialog.setMessage("Leave a comment:  ");
+        alertDialog.setTitle("Bare en ting til");
+        alertDialog.setMessage("Legg ved kommentar:  ");
 
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -131,7 +208,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         alertDialog.setView(order_address_comment); // Add edit Text to alert dialog
         alertDialog.setIcon(R.drawable.ic_shopping_cart_black_24dp);
 
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ArrayList<String> orderNames = new ArrayList<>();
@@ -150,7 +227,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                 }
 
                 //Create new Request
-                Request request = new Request(
+                final Request request = new Request(
                         Common.currentUser.getPhone(),
                         Common.currentUser.getName(),
                         orderName,//address
@@ -159,21 +236,114 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                         edtComment.getText().toString(),
                         cart
                 );
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                sdf.setTimeZone(TimeZone.getDefault());
+                String currentDateandTime = sdf.format(new Date());
+
+                Bundle params = new Bundle();
+                params.putString("Timestamp", currentDateandTime);
+                params.putString("Phone", Common.currentUser.getPhone());
+                params.putString("OrderName", orderName);
+                params.putString("TotalPrice", txtTotalPrice.getText().toString());
+                params.putString("Comment", edtComment.getText().toString());
+                params.putString("CartItems", cart.toString());
+                mFirebaseAnalytics.logEvent("Order_submitted", params);
+
+                Calendar c = Calendar.getInstance();
+                int month = c.get(Calendar.MONTH);
+
+
+
+                if(month == 1){
+                    monthRef = database.getReference("Orders/1");
+                }
+
+                if (month == 2){
+                    monthRef = database.getReference("Orders/2");
+                    }
+
+                if(month == 3){
+                    monthRef = database.getReference("Orders/3");
+                }
+
+                if(month == 4){
+                    monthRef = database.getReference("Orders/4");
+                }
+
+                if(month == 5){
+                    monthRef = database.getReference("Orders/5");
+                }
+
+                if(month == 6){
+                    monthRef = database.getReference("Orders/6");
+                }
+
+                if(month == 7){
+                    monthRef = database.getReference("Orders/7");
+                }
+
+                if(month == 8){
+                    monthRef = database.getReference("Orders/8");
+                }
+
+                if(month == 9){
+                    monthRef = database.getReference("Orders/9");
+                }
+
+                if(month == 10){
+                    monthRef = database.getReference("Orders/10");
+                }
+
+                if(month == 11){
+                    monthRef = database.getReference("Orders/11");
+                }
+
+                if(month == 12){
+                    monthRef = database.getReference("Orders/12");
+                }
+
                 //Submit to Firebase
                 // med System.currentTimeMillis som key
-               String order_number = String.valueOf(System.currentTimeMillis());
+                String order_number = String.valueOf(System.currentTimeMillis());
                 requests.child(order_number)
                         .setValue(request);
+
+                monthRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        long count = dataSnapshot.getChildrenCount();
+
+                        String strCount = Long.toString(count+1);
+                        monthRef.child(strCount)
+                                .setValue(request);
+
+
+
+                    }
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
+
+
+
+
+
+
+
+
+
+
                 //Delete cart
                 new Database(getBaseContext()).cleanCart(Common.currentUser.getPhone());
                 sendNotificationOrder(order_number);
+
+
 
 
                 finish();
 
             }
         });
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("Angre", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -197,7 +367,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                   //  Notification notification = new Notification("Lille Haua", "You have a new Order "+order_number);
                     //Sender content = new Sender(serverToken.getToken(),notification);
                     Map<String,String> dataSend = new HashMap<>();
-                    dataSend.put("message", "You have new orders "+ order_number);
+                    dataSend.put("message", "Du har nye bestillinger "+ order_number);
                     DataMessage dataMessage = new DataMessage(serverToken.getToken(),dataSend);
 
 
@@ -208,19 +378,19 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
                                     if(response.code()==200){
                                     if(response.body().success ==1){
-                                        Toast.makeText(Cart.this, "Thank you, your order has been placed", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Cart.this, "Takk, din bestilling er sendt", Toast.LENGTH_LONG).show();
                                         finish();
                                     }
                                     else
                                     {
-                                        Toast.makeText(Cart.this, "There was a problem submitting your order", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Cart.this, "Det var et problem ved sending av bestillingen din", Toast.LENGTH_LONG).show();
                                     }
 
                                 }}
 
                                 @Override
                                 public void onFailure(Call<MyResponse> call, Throwable t) {
-                                    Log.e("ERROR", t.getMessage());
+
                                 }
                             });
 
@@ -246,28 +416,29 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         for (Order order:cart)
             total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
 
-        int myCut  = (int)Math.round(0.012*total);
-        total = total+myCut;
+
+
 
 
         Locale locale = new Locale("en", "US");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
-        txtTotalPrice.setText(fmt.format(total));
 
 
+        if(total >0) {
+            total = total + myPercentage;
+            txtTotalPrice.setText(fmt.format(total));
+        }else {
+            total = total;
+            txtTotalPrice.setText(fmt.format(total));
+        }
 
 
 
     }
 
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if(item.getTitle().equals(Common.DELETE))
-            deleteCart(item.getOrder());
-        return true;
-    }
+
 
     private void deleteCart(int position) {
         cart.remove(position);
@@ -301,16 +472,18 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                 total += (Integer.parseInt(item.getPrice())) * (Integer.parseInt(item.getQuantity()));
             Locale locale = new Locale("en", "US");
             NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-            int myCut  = (int)Math.round(0.012*total);
-            total = total+myCut;
-
-
-            txtTotalPrice.setText(fmt.format(total));
+            if(total >0) {
+                total = total + myPercentage;
+                txtTotalPrice.setText(fmt.format(total));
+            }else {
+                total = total;
+                txtTotalPrice.setText(fmt.format(total));
+            }
 
             //Make snackbar
 
-            Snackbar snackBar = Snackbar.make(rootLayout, name + " removed from cart", Snackbar.LENGTH_LONG);
-            snackBar.setAction("UNDO", new View.OnClickListener() {
+            Snackbar snackBar = Snackbar.make(rootLayout, name + " fjernet fra handlevogn", Snackbar.LENGTH_LONG);
+            snackBar.setAction("ANGRE", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adapter.restoreItem(deleteItem,deleteIndex);
@@ -322,13 +495,16 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                     List<Order>orders = new Database(getBaseContext()).getCarts(Common.currentUser.getPhone());
                     for (Order item: orders)
                         total += (Integer.parseInt(item.getPrice())) * (Integer.parseInt(item.getQuantity()));
-                    Locale locale = new Locale("en", "US");
+                    Locale locale = new Locale("en", "NO");
                     NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-                    int myCut  = (int)Math.round(0.012*total);
-                    total = total+myCut;
+                    if(total >0) {
+                        total = total + myPercentage;
+                        txtTotalPrice.setText(fmt.format(total));
+                    }else {
+                        total = total;
+                        txtTotalPrice.setText(fmt.format(total));
+                    }
 
-
-                    txtTotalPrice.setText(fmt.format(total));
 
                 }
             });

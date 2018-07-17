@@ -53,8 +53,8 @@
     </android.support.design.widget.AppBarLayout>
 
     <com.andremion.counterfab.CounterFab
-        android:id="@+id/btnCart"
-        app:srcCompat="@drawable/ic_shopping_cart_black_24dp"
+        android:id="@+id/btnCart1"
+        android:src="@drawable/ic_shopping_cart_black_24dp"
         android:backgroundTint="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,14 +117,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ImageView
-                            app:srcCompat="@drawable/ic_attach_money_black_24dp"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            />
+
 
                         <TextView
+                            android:paddingLeft="12dp"
                             android:id="@+id/food_price"
                             android:text="1000"
                             android:textSize="18sp"
@@ -133,6 +129,7 @@
                             android:layout_weight="9"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content" />
+
 
                     </LinearLayout>
 
@@ -177,7 +174,7 @@
                        android:layout_marginTop="12dp"
                        android:lineSpacingMultiplier="1.5"
                        android:padding="12dp"
-                       android:text="Description"
+                       android:text="Beskrivelse"
                        android:textColor="@android:color/black"
                        android:textSize="14sp"
                        android:layout_width="wrap_content"
@@ -185,6 +182,150 @@
 
                        />
                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/allergyGuide"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingMultiplier="1.5"
+                        android:padding="12dp"
+                        android:text="Allergi Guide"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="4"
+                        android:padding="5dp"
+                        >
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="A) Melk"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="B) Egg"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="C) Soya"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="D) Nøtter"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="4"
+                        android:padding="5dp"
+                        >
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="E) Soya"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="F) Hvetemel"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="G) Fisk"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="H) Skalldyr"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="4"
+                        android:padding="5dp"
+                        >
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="I) Bløtdyr"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="J) Selleri"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="K) Sennep"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="L) Sesamfrø"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="4"
+                        android:padding="5dp"
+                        >
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="M) Lupin"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="N) Sulfitt"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
@@ -201,7 +342,7 @@
         >
 
     <com.andremion.counterfab.CounterFab
-        android:id="@+id/fab"
+        android:id="@+id/fab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -209,7 +350,7 @@
         android:elevation="0dp"
         android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="@android:color/white"
-        app:srcCompat="@drawable/ic_playlist_add_check_black_24dp"
+        android:src="@drawable/ic_playlist_add_check_black_24dp"
         />
 
 

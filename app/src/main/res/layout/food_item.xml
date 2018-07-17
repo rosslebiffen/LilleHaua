@@ -64,7 +64,7 @@
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:weightSum="8"
+        android:weightSum="11"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
         android:layout_height="0dp"
@@ -82,53 +82,70 @@
             android:layout_height="wrap_content" />
         <ImageView
             android:id="@+id/btnA"
-            android:src="@drawable/ic_gluten2"
-            android:tint="@color/colorAccent"
-            android:visibility="invisible"
+            android:src="@drawable/milk_amber2"
+            android:visibility="visible"
             android:layout_width="0dp"
             android:layout_weight="1"
-
             android:layout_height="wrap_content" />
         <ImageView
             android:id="@+id/btnB"
-            android:src="@drawable/ic_shopping_cart_black_24dp"
-            android:tint="@color/colorAccent"
+            android:src="@drawable/eggs_amber"
             android:layout_width="0dp"
-            android:visibility="invisible"
-            android:layout_weight="1"
-
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/btnC"
-            android:src="@drawable/ic_shopping_cart_black_24dp"
-            android:tint="@color/colorAccent"
-            android:layout_width="0dp"
-            android:visibility="invisible"
-            android:layout_weight="1"
-
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/btnD"
-            android:src="@drawable/ic_shopping_cart_black_24dp"
-            android:tint="@color/colorAccent"
-            android:layout_width="0dp"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_weight="1"
 
             android:layout_height="wrap_content" />
         <ImageView
             android:id="@+id/btnE"
-            android:src="@drawable/ic_shopping_cart_black_24dp"
-            android:tint="@color/colorAccent"
+            android:src="@drawable/soya_amber"
             android:layout_width="0dp"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_weight="1"
 
             android:layout_height="wrap_content" />
         <ImageView
             android:id="@+id/btnF"
-            android:src="@drawable/ic_shopping_cart_black_24dp"
-            android:tint="@color/colorAccent"
+            android:src="@drawable/wheat_amber2"
+            android:layout_width="0dp"
+            android:visibility="visible"
+            android:layout_weight="1"
+
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/btnG"
+            android:src="@drawable/fish_amber"
+            android:layout_width="0dp"
+            android:visibility="visible"
+            android:layout_weight="1"
+
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/btnH"
+            android:src="@drawable/molluscs_amber"
+            android:layout_width="0dp"
+            android:visibility="visible"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            />
+        <ImageView
+            android:id="@+id/btnJ"
+            android:src="@drawable/celery_amber5"
+            android:layout_width="0dp"
+            android:visibility="visible"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            />
+        <ImageView
+            android:id="@+id/btnK"
+            android:src="@drawable/mustard_amber"
+            android:layout_width="0dp"
+            android:visibility="visible"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            />
+        <ImageView
+            android:id="@+id/btnL"
+            android:src="@drawable/sesame_amber"
             android:layout_width="0dp"
             android:visibility="visible"
             android:layout_weight="1"

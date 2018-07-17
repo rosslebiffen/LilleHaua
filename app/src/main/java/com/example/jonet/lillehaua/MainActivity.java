@@ -2,10 +2,13 @@ package com.example.jonet.lillehaua;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -62,10 +65,33 @@ public class MainActivity extends AppCompatActivity {
 
     setContentView(R.layout.activity_main);
 
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean agreed = sharedPreferences.getBoolean("agreed",false);
+        if (!agreed) {
+            new android.support.v7.app.AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Sluttbrukerlisens (EULA)")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("agreed", true);
+                            editor.apply();
+                        }
+                    })
+                    .setNegativeButton("NEI", null)
+                    .setMessage("Dette er en betaversjon. Lille Haua tar derfor ikke ansvar for tekniske feil og andre problemer som måtte oppstå ved bruk av denne applikasjonen. \n" +
+                            "Bildene i menyen er dekorative og representerer ikke nødvendigvis et godt virkelighetsbilde av maten vi serverer.\n" +
+                            "Totalsummen på bestillinger gjort i appen er 2 kroner høyere, dette går til vedlikehold og oppdatering av applikasjonen og databasen.  \n" +
+                            "\n" +
+                            "\n" +
+                            "Ved å trykke \"Ok\" aksepterer du disse vilkårene og godtar at Lille Haua kan lagre og bruke telefonnummeret ditt til å utføre bestillinger. ")
+                    .show();
+        }
+
 
     btn_continue = (Button)findViewById(R.id.btn_continue);
 
-    txtSlogan = (TextView)findViewById(R.id.txtSlogan);
+   // txtSlogan = (TextView)findViewById(R.id.txtSlogan);
 
     printKeyHash();
 
@@ -94,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         //create dialog
         final AlertDialog waitingDialog = new SpotsDialog(this);
         waitingDialog.show();
-        waitingDialog.setMessage("Please wait");
+        waitingDialog.setMessage("Vennligst vent");
         waitingDialog.setCancelable(false);
 
         AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
@@ -155,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else if(result.wasCancelled())
             {
-                Toast.makeText(this, "Cancel",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Forbindelsen ble avbrutt",Toast.LENGTH_SHORT).show();
                 return;
             }
             else
@@ -165,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                     //Show dialog
                     AlertDialog waitingDialog = new SpotsDialog(this);
                     waitingDialog.show();
-                    waitingDialog.setMessage("Please wait");
+                    waitingDialog.setMessage("Vennligst vent");
                     waitingDialog.setCancelable(false);
 
                     //Get current phone
@@ -193,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if(task.isSuccessful())
-                                                                    Toast.makeText(MainActivity.this, "User Registered successfully",Toast.LENGTH_SHORT).show();
+                                                                    Toast.makeText(MainActivity.this, "Din bruker ble registrert",Toast.LENGTH_SHORT).show();
 
                                                                 //login
                                                                 users.child(userPhone)
@@ -268,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
            {
                MessageDigest md = MessageDigest.getInstance("SHA");
                md.update(signature.toByteArray());
-               Log.d("KeyHash", Base64.encodeToString(md.digest(),Base64.DEFAULT));
+
            }
        } catch (PackageManager.NameNotFoundException e) {
            e.printStackTrace();

@@ -3,15 +3,20 @@ package com.example.jonet.lillehaua.Common;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.ParseException;
 
 import com.example.jonet.lillehaua.Model.User;
 import com.example.jonet.lillehaua.Remote.APIService;
 import com.example.jonet.lillehaua.Remote.RetrofitClient;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 public class Common {
 
     public static String topicName = "News";
+
 
 
     public static User currentUser;
@@ -34,11 +39,11 @@ public class Common {
     public static String convertCodeToStatus(String code)
     {
         if(code.equals("0"))
-            return "Received";
+            return "Mottatt";
         else if(code.equals("1"))
-            return "Preparing your food";
+            return "Lager maten din";
         else
-            return "Done";
+            return "Ferdig";
     }
 
     public static boolean isConnectedToInternet(Context context)
@@ -59,6 +64,8 @@ public class Common {
         }
         return false;
     }
+
+
 
 
 }

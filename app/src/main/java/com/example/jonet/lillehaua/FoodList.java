@@ -3,6 +3,7 @@ package com.example.jonet.lillehaua;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class FoodList extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference foodList;
-    CounterFab fab;
+    CounterFab fabFoodList;
     public  FirebaseRecyclerAdapter<Food,FoodViewHolder> adapter;
 
     String categoryId="";
@@ -98,7 +99,7 @@ public class FoodList extends AppCompatActivity {
                         loadListFood(categoryId);
                     else
                     {
-                        Toast.makeText(FoodList.this, "Please check your internet connection ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodList.this, "Vennligst sjekk nettverksforbindelsen din ", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -117,13 +118,13 @@ public class FoodList extends AppCompatActivity {
                         loadListFood(categoryId);
                     else
                     {
-                        Toast.makeText(FoodList.this, "Please check your internet connection ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodList.this, "Vennligst sjekk nettverksforbindelsen din  ", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
                 //search
                 materialSearchBar = (MaterialSearchBar)findViewById(R.id.searchBar);
-                materialSearchBar.setHint("Search all food");
+                materialSearchBar.setHint("Søk igjennom menyen vår");
                 //materialSearchBar.setSpeechMode(false); no need, because we already define it at xml
                 loadSuggest();
 
@@ -188,15 +189,15 @@ public class FoodList extends AppCompatActivity {
 
 
 
-        fab = (CounterFab) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabFoodList = (CounterFab) findViewById(R.id.fabFoodList);
+        fabFoodList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent cartIntent = new Intent (FoodList.this,Cart.class);
                 startActivity(cartIntent);
             }
         });
-        fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+        fabFoodList.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
 
 
 
@@ -227,7 +228,7 @@ public class FoodList extends AppCompatActivity {
                     public void onClick(View view) {
                         boolean ifExists = new Database(getBaseContext()).checkFoodExists(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
                         if(ifExists){
-                            Toast.makeText(FoodList.this, "You already have this item in your cart", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FoodList.this, "Du har allerede dette i handlevognen", Toast.LENGTH_SHORT).show();
                         }
                         if(!ifExists) {
                             new Database(getBaseContext()).addToCart(new Order(
@@ -239,8 +240,8 @@ public class FoodList extends AppCompatActivity {
                                     model.getDiscount(),
                                     model.getImage()
                             ));
-                            Toast.makeText(FoodList.this, "Added to cart", Toast.LENGTH_SHORT).show();
-                            fab.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
+                            Toast.makeText(FoodList.this, "Lagt til i handlevognen", Toast.LENGTH_SHORT).show();
+                            fabFoodList.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
 
                         } else {
                             new Database(getBaseContext()).increaseCart(Common.currentUser.getPhone(),adapter.getRef(position).getKey());
@@ -280,13 +281,13 @@ public class FoodList extends AppCompatActivity {
                         {
                             localDB.addToFavorites(favorites);
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                            Toast.makeText(FoodList.this, ""+model.getName()+" was added to Favorites", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FoodList.this, ""+model.getName()+" ble lagt til i favoritter", Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
                             localDB.removeFromFavorites(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                            Toast.makeText(FoodList.this, ""+model.getName()+" was removed from  Favorites", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FoodList.this, ""+model.getName()+" ble fjernet fra favoritter", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -322,7 +323,11 @@ public class FoodList extends AppCompatActivity {
         //fix click back foodetail and get no item in foodlist
         if(adapter != null)
             adapter.startListening();
-        fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+
+        fabFoodList.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+
+        if(searchAdapter !=null)
+            searchAdapter.startListening();
 
     }
 
@@ -348,7 +353,7 @@ public class FoodList extends AppCompatActivity {
 
 
 
-    private void loadListFood(String categoryId) {
+    private void loadListFood(final String categoryId) {
         //Create query by category id
         Query searchByName = foodList.orderByChild("menuId").equalTo(categoryId);
         // create options with query
@@ -359,118 +364,149 @@ public class FoodList extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(foodOptions) {
             @Override
             protected void onBindViewHolder(@NonNull final FoodViewHolder viewHolder, final int position, @NonNull final Food model) {
+
+
                 if(model.getDescription().contains("A)")){
 
-                    viewHolder.btnA.setVisibility(View.VISIBLE);
+
                 }else{
-                    viewHolder.btnA.setVisibility(View.INVISIBLE);
+                    viewHolder.btnA.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnA.setAlpha(50);
                 }
                 if(model.getDescription().contains("B)")){
 
-                    viewHolder.btnB.setVisibility(View.VISIBLE);
-                }else{
-                    viewHolder.btnB.setVisibility(View.INVISIBLE);
-                }
-                if(model.getDescription().contains("C)")){
 
-                    viewHolder.btnC.setVisibility(View.VISIBLE);
                 }else{
-                    viewHolder.btnC.setVisibility(View.INVISIBLE);
-                }
-                if(model.getDescription().contains("D)")){
-
-                    viewHolder.btnD.setVisibility(View.VISIBLE);
-                }else{
-                    viewHolder.btnD.setVisibility(View.INVISIBLE);
+                    viewHolder.btnB.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnB.setAlpha(50);
                 }
                 if(model.getDescription().contains("E)")){
 
-                    viewHolder.btnE.setVisibility(View.VISIBLE);
+
                 }else{
-                    viewHolder.btnE.setVisibility(View.INVISIBLE);
+                    viewHolder.btnE.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnE.setAlpha(50);
                 }
                 if(model.getDescription().contains("F)")){
 
-                    viewHolder.btnF.setVisibility(View.VISIBLE);
+
                 }else{
-                    viewHolder.btnF.setVisibility(View.INVISIBLE);
+                    viewHolder.btnF.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnF.setAlpha(50);
+                }
+                if(model.getDescription().contains("G)")){
+
+
+                }else{
+                    viewHolder.btnG.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnG.setAlpha(50);
+                }
+                if(model.getDescription().contains("H)")){
+
+
+                }else{
+                    viewHolder.btnH.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnH.setAlpha(50);
+                }
+                if(model.getDescription().contains("J)")){
+
+
+                }else{
+                    viewHolder.btnJ.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnJ.setAlpha(50);
+                }
+                if(model.getDescription().contains("K)")){
+
+
+                }else{
+                    viewHolder.btnK.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnK.setAlpha(50);
+                }
+                if(model.getDescription().contains("L)")){
+
+
+                }else{
+                    viewHolder.btnL.setColorFilter(ContextCompat.getColor(FoodList.this,R.color.colorAllergyOff));
+                    viewHolder.btnL.setAlpha(50);
                 }
                 viewHolder.food_name.setText(model.getName());
-                viewHolder.food_price.setText(String.format("$ %s",model.getPrice().toString()));
+                viewHolder.food_price.setText(String.format(model.getPrice().toString()+",-"));
                 Picasso.with(getBaseContext()).load(model.getImage())
                         .into(viewHolder.food_image) ;
 
-                //Quick Cart
 
 
-                viewHolder.quickCart.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean ifExists = new Database(getBaseContext()).checkFoodExists(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
-                        if(ifExists){
-                            Toast.makeText(FoodList.this, "You already have this item in your cart", Toast.LENGTH_SHORT).show();
+                    //Quick Cart
+                    viewHolder.quickCart.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            boolean ifExists = new Database(getBaseContext()).checkFoodExists(adapter.getRef(position).getKey(), Common.currentUser.getPhone());
+                            if (ifExists) {
+                                Toast.makeText(FoodList.this, "Du har allerede dette i handlevognen", Toast.LENGTH_SHORT).show();
+                            }
+                            if (!ifExists) {
+                                new Database(getBaseContext()).addToCart(new Order(
+                                        Common.currentUser.getPhone(),
+                                        adapter.getRef(position).getKey(),
+                                        model.getName(),
+                                        "1",
+                                        model.getPrice(),
+                                        model.getDiscount(),
+                                        model.getImage()
+                                ));
+                                Toast.makeText(FoodList.this, "Lagt til i handlevogn", Toast.LENGTH_SHORT).show();
+                                fabFoodList.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
+
+                            } else {
+                                new Database(getBaseContext()).increaseCart(Common.currentUser.getPhone(), adapter.getRef(position).getKey());
+
+                            }
+
                         }
-                        if(!ifExists) {
-                            new Database(getBaseContext()).addToCart(new Order(
-                                    Common.currentUser.getPhone(),
-                                    adapter.getRef(position).getKey(),
-                                    model.getName(),
-                                    "1",
-                                    model.getPrice(),
-                                    model.getDiscount(),
-                                    model.getImage()
-                            ));
-                            Toast.makeText(FoodList.this, "Added to cart", Toast.LENGTH_SHORT).show();
-                            fab.setCount(new Database(getBaseContext()).getCountCart(Common.currentUser.getPhone()));
+                    });
 
-                        } else {
-                            new Database(getBaseContext()).increaseCart(Common.currentUser.getPhone(),adapter.getRef(position).getKey());
+                    //Add favorites
+                    if(localDB.isFavorite(adapter.getRef(position).getKey(),Common.currentUser.getPhone()))
+                        viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
 
+                    //Click to change state of Favorites
+                    viewHolder.fav_image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Favorites favorites = new Favorites();
+                            favorites.setFoodId(adapter.getRef(position).getKey());
+                            favorites.setFoodName(model.getName());
+                            favorites.setFoodDescription(model.getDescription());
+                            favorites.setFoodDiscount(model.getDiscount());
+                            favorites.setFoodImage(model.getImage());
+                            favorites.setFoodMenuId(model.getMenuId());
+                            favorites.setUserPhone(Common.currentUser.getPhone());
+                            favorites.setFoodPrice(model.getPrice());
+
+
+
+
+
+                            if(!localDB.isFavorite(adapter.getRef(position).getKey(),Common.currentUser.getPhone()))
+                            {
+                                localDB.addToFavorites(favorites);
+                                viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                Toast.makeText(FoodList.this, ""+model.getName()+" ble lagt til i favoritter", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                localDB.removeFromFavorites(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
+                                viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                                Toast.makeText(FoodList.this, ""+model.getName()+" ble fjernet fra favoritter", Toast.LENGTH_SHORT).show();
+                            }
                         }
-
-                    }
-                });
-
-
-
-
-                //Add favorites
-                if(localDB.isFavorite(adapter.getRef(position).getKey(),Common.currentUser.getPhone()))
-                    viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-
-                //Click to change state of Favorites
-                viewHolder.fav_image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        Favorites favorites = new Favorites();
-                        favorites.setFoodId(adapter.getRef(position).getKey());
-                        favorites.setFoodName(model.getName());
-                        favorites.setFoodDescription(model.getDescription());
-                        favorites.setFoodDiscount(model.getDiscount());
-                        favorites.setFoodImage(model.getImage());
-                        favorites.setFoodMenuId(model.getMenuId());
-                        favorites.setUserPhone(Common.currentUser.getPhone());
-                        favorites.setFoodPrice(model.getPrice());
+                    });
 
 
 
 
 
-                        if(!localDB.isFavorite(adapter.getRef(position).getKey(),Common.currentUser.getPhone()))
-                        {
-                            localDB.addToFavorites(favorites);
-                            viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                            Toast.makeText(FoodList.this, ""+model.getName()+" was added to Favorites", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            localDB.removeFromFavorites(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
-                            viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                            Toast.makeText(FoodList.this, ""+model.getName()+" was removed from  Favorites", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
 
                 final Food local = model;
 
