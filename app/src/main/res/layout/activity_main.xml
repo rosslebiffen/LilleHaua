@@ -6,7 +6,7 @@
     android:id="@+id/mainL"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context="com.example.jonet.lillehaua.MainActivity">
+    tools:context="com.rosslebiffen.jonet.lillehaua.MainActivity">
 
     <LinearLayout
         android:orientation="vertical"

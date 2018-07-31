@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_cart"
     android:padding="16dp"
-    tools:context="com.example.jonet.lillehaua.Cart">
+    tools:context="com.rosslebiffen.jonet.lillehaua.Cart">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listCart"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Total"
+                    android:text="Total  "
                     android:textSize="20sp"
                     android:textColor="@android:color/white"
                     android:layout_width="wrap_content"

@@ -7,7 +7,7 @@
     android:background="@drawable/background_order"
     android:padding="16dp"
     android:id="@+id/orderLayout"
-    tools:context="com.example.jonet.lillehaua.OrderStatus">
+    tools:context="com.rosslebiffen.jonet.lillehaua.OrderStatus">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listOrders"
